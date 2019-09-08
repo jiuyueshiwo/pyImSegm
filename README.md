@@ -126,34 +126,33 @@ Short description of our three sets of experiments that together compose single 
 
 ### Annotation tools
 
-We introduce some useful tools for work with image annotation and segmentation.
-
-* **Quantization:** in case you have some smooth colour labelling in your images you can remove them with following quantisation script.
+We introduce some useful tools for work with image annotation and segmentation.(我们介绍了一些有用的工具来处理图像注释和分割。)
+* **Quantization:(量化)** in case you have some smooth colour labelling in your images you can remove them with following quantisation script.(如果你在你的图像中有一些平滑的颜色标签，你可以用下面的量化脚本删除它们。)
     ```bash
     python handling_annotations/run_image_color_quantization.py \
         -imgs "./data_images/drosophila_ovary_slice/segm_rgb/*.png" \
         -m position -thr 0.01 --nb_workers 2
     ```
-* **Paint labels:** concerting image labels into colour space and other way around.
+* **Paint labels:** concerting image labels into colour space and other way around.(将图像标签协调到颜色空间和其他方式。)
     ```bash
     python handling_annotations/run_image_convert_label_color.py \
         -imgs "./data_images/drosophila_ovary_slice/segm/*.png" \
         -out ./data_images/drosophila_ovary_slice/segm_rgb
     ```
-* **Visualisation:** having input image and its segmentation we can use simple visualisation which overlap the segmentation over input image. 
+* **Visualisation:(可视化：)** having input image and its segmentation we can use simple visualisation which overlap the segmentation over input image. (有了输入图像和它的分割，我们可以使用简单的可视化，重叠的分割输入图像。)
     ```bash
     python handling_annotations/run_overlap_images_segms.py \
         -imgs "./data_images/drosophila_ovary_slice/image/*.jpg" \
         -segs ./data_images/drosophila_ovary_slice/segm \
         -out ./results/overlap_ovary_segment
     ```
-* **In-painting** selected labels in segmentation.
+* **In-painting(在绘画中)** selected labels in segmentation.(分段中的选定标签。)
     ```bash
     python handling_annotations/run_segm_annot_inpaint.py \
         -imgs "./data_images/drosophila_ovary_slice/segm/*.png" \
         --label 4
     ```
-* **Replace labels:** change labels in input segmentation into another set of labels in 1:1 schema.
+* **Replace labels:(替换标签：)** change labels in input segmentation into another set of labels in 1:1 schema.(将输入分段中的标签更改为1:1架构中的另一组标签。)
     ```bash
     python handling_annotations/run_segm_annot_relabel.py \
         -out ./results/relabel_center_levels \
@@ -161,12 +160,12 @@ We introduce some useful tools for work with image annotation and segmentation.
     ```
 
 
-### Semantic (un/semi)supervised segmentation
+### Semantic (un/semi)supervised segmentation(语义（非/半）监督分割)
 
-We utilise (un)supervised segmentation according to given training examples or some expectations.
+We utilise (un)supervised segmentation according to given training examples or some expectations.(我们根据给定的训练示例或一些期望使用（非）监督的分段。)
 ![vusial debug](figures/visual_img_43_debug.jpg)
 
-* Evaluate superpixels (with given SLIC parameters) quality against given segmentation. It helps to find out the best SLIC configuration.
+* Evaluate superpixels (with given SLIC parameters) quality against given segmentation. It helps to find out the best SLIC configuration.(根据给定的分割来评估超像素（具有给定的slic参数）的质量。它有助于找出最佳的slic配置。)
     ```bash
     python experiments_segmentation/run_eval_superpixels.py \
         -imgs "./data_images/drosophila_ovary_slice/image/*.jpg" \
@@ -174,14 +173,14 @@ We utilise (un)supervised segmentation according to given training examples or s
         --img_type 2d_split \
         --slic_size 20 --slic_regul 0.25 --slico
     ```
-* Perform **Un-Supervised** segmentation in images given in CSV
+* Perform **Un-Supervised(无监督)** segmentation in images given in CSV(csv图像分割)
     ```bash
     python experiments_segmentation/run_segm_slic_model_graphcut.py \
        -l ./data_images/langerhans_islets/list_lang-isl_imgs-annot.csv -i "" \
        -cfg experiments_segmentation/sample_config.yml \
        -o ./results -n langIsl --nb_classes 3 --visual --nb_workers 2
     ```
-    OR specified on particular path:
+    OR specified on particular path:(或在特定路径上指定：)
     ```bash
     python experiments_segmentation/run_segm_slic_model_graphcut.py \
        -l "" -i "./data_images/langerhans_islets/image/*.jpg" \
@@ -189,7 +188,7 @@ We utilise (un)supervised segmentation according to given training examples or s
        -o ./results -n langIsl --nb_classes 3 --visual --nb_workers 2
     ```
     ![unsupervised](figures/imag-disk-20_gmm.jpg)
-* Perform **Supervised** segmentation with afterwards evaluation.
+* Perform **Supervised(有监督)** segmentation with afterwards evaluation.(评估后的分割)
     ```bash
     python experiments_segmentation/run_segm_slic_classif_graphcut.py \
         -l ./data_images/drosophila_ovary_slice/list_imgs-annot-struct.csv \
@@ -198,8 +197,8 @@ We utilise (un)supervised segmentation according to given training examples or s
         -o ./results -n Ovary --img_type 2d_split --visual --nb_workers 2
     ```
     ![supervised](figures/imag-disk-20_train.jpg)
-* Perform **Semi-Supervised** is using the the supervised pipeline with not fully annotated images.
-* For both experiment you can evaluate segmentation results.
+* Perform **Semi-Supervised(半监督)** is using the the supervised pipeline with not fully annotated images.(正在使用未完全注释图像的受监视管道。)
+* For both experiment you can evaluate segmentation results.(对于这两个实验，您都可以评估分割结果。)
     ```bash
     python experiments_segmentation/run_compute-stat_annot-segm.py \
         -a "./data_images/drosophila_ovary_slice/annot_struct/*.png" \
@@ -224,17 +223,17 @@ run_LPO: true
 cross_val: 0.1
 ```
 
-### Center detection and ellipse fitting
+### Center detection and ellipse fitting中心检测与椭圆拟合
 
-In general, the input is a formatted list (CSV file) of input images and annotations. Another option is set by `-list none` and then the list is paired with given paths to images and annotations.
+In general, the input is a formatted list (CSV file) of input images and annotations. Another option is set by `-list none` and then the list is paired with given paths to images and annotations.(通常，输入是输入图像和注释的格式化列表（csv文件）。另一个选项由“-list none”设置，然后列表与给定的图像和注释路径配对。)
 
 **Experiment sequence is the following:**
 
-1. We can create the annotation completely manually or use the following script which uses annotation of individual objects and create the zones automatically.
+1. We can create the annotation completely manually or use the following script which uses annotation of individual objects and create the zones automatically.(我们可以完全手动创建注释，也可以使用以下脚本，该脚本使用单个对象的注释并自动创建分区。)
     ```bash
     python experiments_ovary_centres/run_create_annotation.py
     ```
-1. With zone annotation, we train a classifier for centre candidate prediction. The annotation can be a CSV file with annotated centres as points, and the zone of positive examples is set uniformly as the circular neighbourhood around these points. Another way (preferable) is to use an annotated image with marked zones for positive, negative and neutral examples.
+1. With zone annotation, we train a classifier for centre candidate prediction. The annotation can be a CSV file with annotated centres as points, and the zone of positive examples is set uniformly as the circular neighbourhood around these points. Another way (preferable) is to use an annotated image with marked zones for positive, negative and neutral examples.(通过区域标注，我们训练了一个用于中心候选预测的分类器。注释可以是一个csv文件，以带注释的中心为点，正示例的区域统一设置为这些点周围的圆形邻域。另一种方法（更可取）是使用带标记区域的注释图像来表示正、负和中性示例。)
     ```bash
     python experiments_ovary_centres/run_center_candidate_training.py -list none \
         -segs "./data_images/drosophila_ovary_slice/segm/*.png" \
@@ -242,7 +241,7 @@ In general, the input is a formatted list (CSV file) of input images and annotat
         -centers "./data_images/drosophila_ovary_slice/center_levels/*.png" \
         -out ./results -n ovary
     ```
-1. Having trained classifier we perform center prediction composed from two steps: i) center candidate clustering and ii) candidate clustering.
+1. Having trained classifier we perform center prediction composed from two steps: i) center candidate clustering and ii) candidate clustering.(经过训练的分类器，我们进行中心预测，由两个步骤组成：i）中心候选聚类和ii）候选聚类。)
     ```bash
     python experiments_ovary_centres/run_center_prediction.py -list none \
         -segs "./data_images/drosophila_ovary_slice/segm/*.png" \
@@ -250,11 +249,11 @@ In general, the input is a formatted list (CSV file) of input images and annotat
         -centers ./results/detect-centers-train_ovary/classifier_RandForest.pkl \
         -out ./results -n ovary
     ```
-1. Assuming you have an expert annotation you can compute static such as missed eggs.
+1. Assuming you have an expert annotation you can compute static such as missed eggs.(假设您有一个专家注释，您可以计算静态的，例如丢失的鸡蛋。)
     ```bash
     python experiments_ovary_centres/run_center_evaluation.py
     ```
-1. This is just cut out clustering in case you want to use different parameters.
+1. This is just cut out clustering in case you want to use different parameters.(如果您想使用不同的参数，这只是切掉聚类。)
     ```bash
     python experiments_ovary_centres/run_center_clustering.py \
         -segs "./data_images/drosophila_ovary_slice/segm/*.png" \
@@ -262,21 +261,21 @@ In general, the input is a formatted list (CSV file) of input images and annotat
         -centers "./results/detect-centers-train_ovary/candidates/*.csv" \
         -out ./results
     ```
-1. Matching the ellipses to the user annotation.
+1. Matching the ellipses to the user annotation.(将椭圆与用户批注匹配。)
     ```bash
     python experiments_ovary_detect/run_ellipse_annot_match.py \
         -info "~/Medical-drosophila/all_ovary_image_info_for_prague.txt" \
         -ells "~/Medical-drosophila/RESULTS/3_ellipse_ransac_crit_params/*.csv" \
         -out ~/Medical-drosophila/RESULTS
     ```
-1. Cut eggs by stages and norm to mean size.
+1. Cut eggs by stages and norm to mean size.(分阶段切鸡蛋，正常切至平均大小。)
     ```bash
     python experiments_ovary_detect/run_ellipse_cut_scale.py \
         -info ~/Medical-drosophila/RESULTS/info_ovary_images_ellipses.csv \
         -imgs "~/Medical-drosophila/RESULTS/0_input_images_png/*.png" \
         -out ~/Medical-drosophila/RESULTS/images_cut_ellipse_stages
     ```
-1. Rotate (swap) extracted eggs according the larger mount of mass.
+1. Rotate (swap) extracted eggs according the larger mount of mass.(根据较大的质量旋转（交换）提取的鸡蛋。)
     ```bash
     python experiments_ovary_detect/run_egg_swap_orientation.py \
         -imgs "~/Medical-drosophila/RESULTS/atlas_datasets/ovary_images/stage_3/*.png" \
@@ -285,7 +284,7 @@ In general, the input is a formatted list (CSV file) of input images and annotat
 
 ![ellipse fitting](figures/insitu7544_ellipses.jpg)
 
-### Region growing with a shape prior
+### Region growing with a shape prior(基于优鲜形状的区域生长)
 
 In case you do not have estimated object centres, you can use [plugins](ij_macros) for landmarks import/export for [Fiji](http://fiji.sc/).
 
@@ -296,13 +295,13 @@ pip install --user git+https://github.com/Borda/morph-snakes.git
 
 **Experiment sequence is the following:**
 
-1. Estimating the shape model from set training images containing a single egg annotation.
+1. Estimating the shape model from set training images containing a single egg annotation.（从包含单个鸡蛋注释的集合训练图像中估计形状模型。）
     ```bash
     python experiments_ovary_detect/run_RG2Sp_estim_shape-models.py  \
         -annot "~/Medical-drosophila/egg_segmentation/mask_2d_slice_complete_ind_egg/*.png" \
         -out ./data_images -nb 15
     ```
-1. Run several segmentation techniques on each image.
+1. Run several segmentation techniques on each image.（对每个图像运行几个分割技术。）
     ```bash
     python experiments_ovary_detect/run_ovary_egg-segmentation.py  \
         -list ./data_images/drosophila_ovary_slice/list_imgs-segm-center-points.csv \
@@ -318,18 +317,18 @@ pip install --user git+https://github.com/Borda/morph-snakes.git
            rg2sp_GC-mixture \
            watershed_morph
     ```
-1. Evaluate your segmentation ./results to expert annotation.
+1. Evaluate your segmentation ./results to expert annotation.（评估您的分段。/结果到专家注释。）
     ```bash
     python experiments_ovary_detect/run_ovary_segm_evaluation.py --visual
     ```
-1. In the end, cut individual segmented objects comes as minimal bounding box.
+1. In the end, cut individual segmented objects comes as minimal bounding box.（最后，切割单个分段对象作为最小边界框。）
     ```bash
     python experiments_ovary_detect/run_cut_segmented_objects.py \
         -annot "./data_images/drosophila_ovary_slice/annot_eggs/*.png" \
         -img "./data_images/drosophila_ovary_slice/segm/*.png" \
         -out ./results/cut_images --padding 50
     ```
-1. Finally, performing visualisation of segmentation results together with expert annotation.
+1. Finally, performing visualisation of segmentation results together with expert annotation.（最后，结合专家注释对分割结果进行可视化。）
     ```bash
     python experiments_ovary_detect/run_export_user-annot-segm.py
     ```
